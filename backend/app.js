@@ -35,6 +35,17 @@ class Server {
 
       return res.status(200).json(itemFiltred);
     });
+
+    this.app.post('/items', (req, res) => {
+      const newItem = req.body;
+      if (!newItem.title || !newItem.description) {
+        return res.status(400).json({ message: 'Item title and description are mandatory' });
+      }
+
+      newItem.id = items.length + 1;
+      items.push(newItem);
+      return res.status(201).json(newItem);
+    });
   }
 
   start() {
