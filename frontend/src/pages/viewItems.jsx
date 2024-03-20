@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { requestData } from '../services/requests';
 import BackButton from '../components/backButton';
+import { useNavigate } from 'react-router-dom';
 
 function ViewItems() {
-  const [itemsList, setItemsList] = useState();
+  const navigate = useNavigate();
+  const [itemsList, setItemsList] = useState([]);
 
   const hancleClick = async () => {
     const data = await requestData('/items');
-    console.log(data);
     setItemsList(data);
   };
 
@@ -33,7 +34,7 @@ function ViewItems() {
         {itemsList && (
           <div style={{ margin: '1rem', textAlign: 'left'}}>
             {itemsList.map((e) => (
-              <a key={e.id}>
+              <a onClick={() => navigate(`/viewItems/${e.id}`)} key={e.id}>
                 <li>{e.title}</li>
               </a>
             ))}
