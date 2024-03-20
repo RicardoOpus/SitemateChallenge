@@ -1,11 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-
-const items = [
-  { id: 1, title: 'John', description: 'This is a description of John' },
-  { id: 2, title: 'Maria', description: 'This is a description of Maria' },
-  { id: 3, title: 'Alan', description: 'This is a description of José' },
-];
+const items = require('./data/items');
+const FindItemById = require('./middlewares/verifyRequests');
 
 class Server {
   constructor() {
@@ -25,15 +21,8 @@ class Server {
       res.json(items);
     });
 
-    this.app.get('/items/:id', (req, res) => {
-      const itemId = parseInt(req.params.id, 10);
-      const itemFiltred = items.find((item) => item.id === itemId);
-
-      if (!itemFiltred) {
-        return res.status(404).json({ message: 'Item not found' });
-      }
-
-      return res.status(200).json(itemFiltred);
+    this.app.get('/items/:id', FindItemById.middleware, (req, res) => {
+      res.status(200).json(req.item);
     });
 
     this.app.post('/items', (req, res) => {
@@ -47,23 +36,16 @@ class Server {
       return res.status(201).json(newItem);
     });
 
-    this.app.put('/items/:id', (req, res) => {
-      const itemId = parseInt(req.params.id, 10);
+    this.app.put('/items/:id', FindItemById.middleware, (req, res) => {
       const updateItem = req.body;
-      const existingItem = items.find((item) => item.id === itemId);
 
-      if (!existingItem) {
-        return res.status(404).json({ message: 'Item not found' });
-      }
-
-      if (!updateItem.title) {
+      if (!updateItem.title || !updateItem.description) {
         return res.status(400).json({ message: 'Item title and description are mandatory' });
       }
 
-      existingItem.title = updateItem.title;
-      existingItem.description = updateItem.description;
-
-      return res.status(200).json(existingItem);
+      req.item.title = updateItem.title;
+      req.item.description = updateItem.description;
+      return res.status(200).json(req.item);
     });
 
     this.app.delete('/items/:id', (req, res) => {
