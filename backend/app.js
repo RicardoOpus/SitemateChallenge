@@ -46,6 +46,25 @@ class Server {
       items.push(newItem);
       return res.status(201).json(newItem);
     });
+
+    this.app.put('/items/:id', (req, res) => {
+      const itemId = parseInt(req.params.id, 10);
+      const updateItem = req.body;
+      const existingItem = items.find((item) => item.id === itemId);
+
+      if (!existingItem) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+
+      if (!updateItem.title) {
+        return res.status(400).json({ message: 'Item title and description are mandatory' });
+      }
+
+      existingItem.title = updateItem.title;
+      existingItem.description = updateItem.description;
+
+      return res.status(200).json(existingItem);
+    });
   }
 
   start() {
