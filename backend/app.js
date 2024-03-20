@@ -1,11 +1,24 @@
 const express = require('express');
 
-const app = express();
+class Server {
+  constructor() {
+    this.app = express();
+    this.port = Number(process.env.APP_PORT || 3000);
+    this.configureRoutes();
+  }
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
+  configureRoutes() {
+    this.app.get('/', (_req, res) => {
+      res.send('Hello world!!!');
+    });
+  }
 
-app.listen(3000, () => {
-  console.log('Server running at http://localhost:3000');
-});
+  start() {
+    this.app.listen(this.port, () => {
+      console.log('the server is running at http://localhost:3000');
+    });
+  }
+}
+
+const server = new Server();
+server.start();
