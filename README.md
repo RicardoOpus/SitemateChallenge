@@ -1,4 +1,4 @@
-# testCrudFull
+# SitemateChallenge
 
 ## Project Technologies:
 - JavaScript
