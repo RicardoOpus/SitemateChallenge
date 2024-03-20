@@ -12,6 +12,12 @@ function Home() {
         <button onClick={() => navigate('/viewItems')}>
           Items List
         </button>
+        <button onClick={() => navigate('/postItems')}>
+          Post Item
+        </button>
+        <button onClick={() => navigate('/DelteItem')}>
+          Delete Item
+        </button>
       </main>
     </div>
   );
