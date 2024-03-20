@@ -9,6 +9,7 @@ function PostItems() {
 
   const hancleClick = async () => {
     const data = await requestPost('/items', {title: itemTitle, description: 'New person'});
+    console.log(data);
     navigate(`/viewItems/${data.id}`)
   };
 
