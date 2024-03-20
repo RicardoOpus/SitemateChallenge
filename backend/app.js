@@ -65,6 +65,18 @@ class Server {
 
       return res.status(200).json(existingItem);
     });
+
+    this.app.delete('/items/:id', (req, res) => {
+      const itemId = parseInt(req.params.id, 10);
+      const index = items.findIndex((item) => item.id === itemId);
+
+      if (index === -1) {
+        return res.status(404).json({ message: 'Item not found' });
+      }
+
+      items.splice(index, 1);
+      return res.status(200).json({ message: 'Item deleted sucessfully!' });
+    });
   }
 
   start() {
