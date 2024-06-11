@@ -25,3 +25,4 @@
 
 Access it through your preferred web browser.
 
+Have fun!
